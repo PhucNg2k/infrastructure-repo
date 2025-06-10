@@ -32,5 +32,5 @@ artifacts:
   files:
     - Task2/packaged-root-stack.yaml
     - Task2/modules/*
-    - Task2/taskcat.yml
+    - Task2/.taskcat.yml
   base-directory: . 
