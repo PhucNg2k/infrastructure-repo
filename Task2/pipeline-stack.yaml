@@ -167,7 +167,7 @@ Resources:
               Service: codebuild.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess
+        - arn:aws:iam::aws:policy/service-role/AWSCodeBuildServiceRole
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
 
@@ -182,9 +182,10 @@ Resources:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSCodePipelineFullAccess
-        - arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess
-        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/service-role/AWSCodePipelineServiceRole
+        - arn:aws:iam::aws:policy/service-role/AWSCodeBuildServiceRole
+        - arn:aws:iam::aws:policy/service-role/AWSCloudFormationServiceRole
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
 
   CloudFormationServiceRole:
@@ -198,7 +199,7 @@ Resources:
               Service: cloudformation.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess  # Note: In production, you should restrict this to only necessary permissions
+        - arn:aws:iam::aws:policy/service-role/AWSCloudFormationServiceRole
 
 Outputs:
   PipelineURL:
