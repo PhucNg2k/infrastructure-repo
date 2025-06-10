@@ -3,11 +3,12 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.9
+      python: 3.10
       nodejs: 12
     commands:
       - pip install --upgrade pip
-      - pip install cfn-lint taskcat
+      - pip install cfn-lint
+      - pip install --upgrade "taskcat>=0.9.70"
   
   pre_build:
     commands:
