@@ -106,10 +106,6 @@ Resources:
                 Branch: !Ref GitHubBranch
                 OAuthToken: !Ref GitHubToken
                 PollForSourceChanges: true
-                PathFilters: |
-                  Task2/**
-                  !Task2/**
-                  !Task2/**/*
               OutputArtifacts:
                 - Name: SourceCode
               RunOrder: 1
