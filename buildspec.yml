@@ -13,28 +13,39 @@ phases:
     commands:
       - echo "Checking for changes in Task2..."
       - ls -la Task2/
+      - echo "Current AWS region: $AWS_DEFAULT_REGION"
+      - echo "Artifact bucket: $ARTIFACT_BUCKET"
       
   build:
     commands:
       - echo "Running CloudFormation template validation..."
       - echo "Step 1. Running cfn-lint validation..."
       - "cfn-lint --config-file Task2/.cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml || ([ $? -eq 4 ] && echo 'Warnings found but continuing...' || exit $?)"
-      - echo "Step 2. Running taskcat tests..."
+      
+      - echo "Step 2. Packaging templates..."
+      - "aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml"
+      
+      - echo "Step 3. Running taskcat tests..."
       - echo "Checking taskcat configuration..."
       - ls -la Task2/.taskcat.yml
       - cat Task2/.taskcat.yml
-      - echo "Running taskcat with verbose output..."
-      - "cd Task2 && taskcat test -v && cd .."
-      - echo "Step 3. Packaging templates..."
-      - "aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml"
+      
+      - echo "Validating taskcat configuration..."
+      - "cd Task2 && taskcat test list"
+      
+      - echo "Running taskcat with detailed output and no cleanup..."
+      - "cd Task2 && taskcat test --no-delete --verbose"
   
   post_build:
     commands:
       - echo "Template validation, testing, and packaging complete"
+      - echo "Checking for TaskCat outputs and logs..."
+      - find Task2 -name "taskcat_outputs" -type d -exec ls -la {} \; 2>/dev/null || echo "No taskcat_outputs found"
+      - find Task2 -name "*.log" -exec echo "=== {} ===" \; -exec cat {} \; 2>/dev/null || echo "No log files found"
 
 artifacts:
   files:
     - Task2/packaged-root-stack.yaml
     - Task2/modules/*
     - Task2/.taskcat.yml
-  base-directory: . 
+  base-directory: .
