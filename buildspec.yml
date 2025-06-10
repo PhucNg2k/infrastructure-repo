@@ -13,8 +13,8 @@ phases:
     commands:
       - echo "Checking for changes in Task2..."
       - ls -la Task2/
-      - echo "Current AWS region: $AWS_DEFAULT_REGION"
-      - echo "Artifact bucket: $ARTIFACT_BUCKET"
+      - echo "Current AWS region $AWS_DEFAULT_REGION"
+      - echo "Artifact bucket $ARTIFACT_BUCKET"
       # Validate required environment variables
       - |
         if [ -z "$ARTIFACT_BUCKET" ]; then
