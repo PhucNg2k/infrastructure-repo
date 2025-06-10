@@ -2,10 +2,9 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      python: 3.10
-      nodejs: 12
     commands:
+      - sudo apt-get update
+      - sudo apt-get install python3 python3-pip -y
       - pip install --upgrade pip
       - pip install cfn-lint
       - pip install --upgrade "taskcat>=0.9.70"
