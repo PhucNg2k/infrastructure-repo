@@ -29,7 +29,7 @@ phases:
       - "cfn-lint --config-file Task2/.cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml || ([ $? -eq 4 ] && echo 'Warnings found but continuing...' || exit $?)"
       
       - echo "Step 2. Packaging templates..."
-      - echo "Using artifact bucket: $ARTIFACT_BUCKET"
+      - echo "Using artifact bucket $ARTIFACT_BUCKET"
       - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket "$ARTIFACT_BUCKET" --output-template-file Task2/packaged-root-stack.yaml
       
       - echo "Step 3. Running taskcat tests..."
