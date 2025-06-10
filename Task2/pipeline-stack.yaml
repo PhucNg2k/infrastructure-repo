@@ -123,7 +123,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 RoleArn: !GetAtt CloudFormationServiceRole.Arn
                 StackName: infrastructure-stack
-                TemplatePath: ValidatedTemplates::packaged-root-stack.yaml
+                TemplatePath: ValidatedTemplates::Task2/packaged-root-stack.yaml
                 Capabilities: CAPABILITY_IAM
                 ParameterOverrides: !Sub |
                   {
