@@ -2,19 +2,15 @@ project:
   name: infrastructure-test
   regions:
     - ap-southeast-2
-  parameters:
+  global_parameters:
     AllowedIP: 0.0.0.0/32
     KeyName: dummy-key
     S3BucketName: ${ARTIFACT_BUCKET}
   package_lambda: false
-  s3_bucket: !ENV ${ARTIFACT_BUCKET}
+  s3_bucket: ${ARTIFACT_BUCKET}
 
 tests:
   infrastructure-test:
     template: ./root-stack.yaml
     regions:
-      - ap-southeast-2
-    parameters:
-      AllowedIP: 0.0.0.0/32
-      KeyName: dummy-key
-      S3BucketName: ${ARTIFACT_BUCKET} 
+      - ap-southeast-2 
