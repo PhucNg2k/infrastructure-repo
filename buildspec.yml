@@ -17,11 +17,11 @@ phases:
   build:
     commands:
       - echo "Running CloudFormation template validation..."
-      - echo "Step 1: Running cfn-lint validation..."
+      - echo "Step 1. Running cfn-lint validation..."
       - "cfn-lint --config-file Task2/.cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml || ([ $? -eq 4 ] && echo 'Warnings found but continuing...' || exit $?)"
-      - echo "Step 2: Running taskcat tests..."
+      - echo "Step 2. Running taskcat tests..."
       - "cd Task2 && taskcat test run && cd .."
-      - echo "Step 3: Packaging templates..."
+      - echo "Step 3. Packaging templates..."
       - "aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml"
   
   post_build:
