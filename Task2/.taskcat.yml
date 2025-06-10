@@ -7,6 +7,7 @@ project:
     KeyName: dummy-key
     S3BucketName: ${ARTIFACT_BUCKET}
   package_lambda: false
+  s3_bucket: ${ARTIFACT_BUCKET}
 
 tests:
   infrastructure-test:
