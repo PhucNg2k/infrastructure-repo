@@ -1,13 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    AWS_DEFAULT_REGION: !Ref AWS::Region
-    PYTHONUNBUFFERED: 1
-  parameter-store:
-    # Add any SSM parameters if needed
-    # ARTIFACT_BUCKET: /my/parameter/path
-
 phases:
   install:
     commands:
