@@ -94,7 +94,7 @@ Resources:
             files:
               - packaged-root-stack.yaml
               - modules/*
-              - .taskcat.yml
+              - taskcat.yml
             base-directory: Task2
 
   # Pipeline
