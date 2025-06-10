@@ -4,6 +4,7 @@ phases:
   install:
     runtime-versions:
       python: 3.9
+      nodejs: 12
     commands:
       - pip install --upgrade pip
       - pip install cfn-lint taskcat
