@@ -1,0 +1,18 @@
+project:
+  name: infrastructure-test
+  regions:
+    - ap-southeast-2
+  parameters:
+    AllowedIP: 0.0.0.0/32
+    KeyName: dummy-key
+  package_lambda: false
+  s3_bucket: !ENV ${ARTIFACT_BUCKET}
+
+tests:
+  infrastructure-test:
+    template: ./root-stack.yaml
+    regions:
+      - ap-southeast-2
+    parameters:
+      AllowedIP: 0.0.0.0/32
+      KeyName: dummy-key 

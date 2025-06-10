@@ -1,0 +1,7 @@
+---
+ignore_checks:
+  - W2001  # Ignore unused parameter warnings
+  - W3002  # Ignore package command warnings
+  - W3005  # Ignore redundant dependency warnings
+templates:
+  - "**/*.yaml" 

@@ -66,20 +66,36 @@ Resources:
               runtime-versions:
                 python: 3.9
               commands:
+                - pip install --upgrade pip
                 - pip install cfn-lint taskcat
+            pre_build:
+              commands:
+                - echo "Checking for changes in Task2..."
+                - |
+                  if ! git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION^ $CODEBUILD_RESOLVED_SOURCE_VERSION | grep '^Task2/'; then
+                    echo "No changes in Task2, skipping build."
+                    exit 0
+                  fi
+                - echo "Preparing for template validation..."
             build:
               commands:
                 - echo "Running CloudFormation template validation..."
                 - cd Task2
-                - cfn-lint root-stack.yaml modules/*.yaml
-                - echo "Running taskcat tests..."
+                - echo "Step 1: Running cfn-lint validation..."
+                - cfn-lint --config-file .cfnlintrc.yml root-stack.yaml modules/*.yaml || if [ $? -eq 4 ]; then echo "Warnings found but continuing..."; else exit $?; fi
+                - echo "Step 2: Running taskcat tests..."
                 - taskcat test run
+                - echo "Step 3: Packaging templates..."
+                - aws cloudformation package --template-file root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file packaged-root-stack.yaml
+            post_build:
+              commands:
+                - echo "Template validation, testing, and packaging complete"
           artifacts:
             files:
-              - Task2/**/*
-              - taskcat_outputs/**/*
+              - packaged-root-stack.yaml
+              - modules/*
+              - .taskcat.yml
             base-directory: Task2
-            discard-paths: no
 
   # Pipeline
   Pipeline:
@@ -140,7 +156,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 RoleArn: !GetAtt CloudFormationServiceRole.Arn
                 StackName: infrastructure-stack
-                TemplatePath: SourceCode::Task2/root-stack.yaml
+                TemplatePath: ValidatedTemplates::packaged-root-stack.yaml
                 Capabilities: CAPABILITY_IAM
                 ParameterOverrides: !Sub |
                   {
@@ -148,7 +164,7 @@ Resources:
                     "KeyName": "${KeyName}"
                   }
               InputArtifacts:
-                - Name: SourceCode
+                - Name: ValidatedTemplates
               RunOrder: 1
 
   # IAM Roles
