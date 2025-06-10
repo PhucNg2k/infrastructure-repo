@@ -12,6 +12,7 @@ phases:
   pre_build:
     commands:
       - echo "Checking for changes in Task2..."
+      - ls -la Task2/
       
   build:
     commands:
@@ -19,7 +20,11 @@ phases:
       - echo "Step 1. Running cfn-lint validation..."
       - "cfn-lint --config-file Task2/.cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml || ([ $? -eq 4 ] && echo 'Warnings found but continuing...' || exit $?)"
       - echo "Step 2. Running taskcat tests..."
-      - "cd Task2 && taskcat test run && cd .."
+      - echo "Checking taskcat configuration..."
+      - ls -la Task2/.taskcat.yml
+      - cat Task2/.taskcat.yml
+      - echo "Running taskcat with verbose output..."
+      - "cd Task2 && taskcat test run -v && cd .."
       - echo "Step 3. Packaging templates..."
       - "aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml"
   
