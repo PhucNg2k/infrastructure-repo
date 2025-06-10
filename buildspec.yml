@@ -13,8 +13,7 @@ phases:
   pre_build:
     commands:
       - echo "Checking for changes in Task2..."
-      - "if ! git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION^ $CODEBUILD_RESOLVED_SOURCE_VERSION | grep '^Task2/'; then echo 'No changes in Task2, skipping build.'; exit 0; fi"
-  
+      
   build:
     commands:
       - echo "Running CloudFormation template validation..."
