@@ -5,50 +5,19 @@ phases:
     commands:
       - sudo yum update -y
       - sudo yum install -y python3 python3-pip
-      - python3 -m pip install --upgrade pip
       - python3 -m pip install --user cfn-lint taskcat
       - export PATH=$PATH:$HOME/.local/bin
   
-  pre_build:
-    commands:
-      - echo "Checking for changes in Task2..."
-      - ls -la Task2/
-      - echo "Current AWS region $AWS_DEFAULT_REGION"
-      - echo "Artifact bucket $ARTIFACT_BUCKET"
-      # Validate required environment variables
-      - |
-        if [ -z "$ARTIFACT_BUCKET" ]; then
-          echo "Error: ARTIFACT_BUCKET environment variable is not set"
-          exit 1
-        fi
-      
   build:
     commands:
-      - echo "Running CloudFormation template validation..."
-      - echo "Step 1. Running cfn-lint validation..."
-      - "cfn-lint --config-file Task2/.cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml || ([ $? -eq 4 ] && echo 'Warnings found but continuing...' || exit $?)"
+      - echo "Running cfn-lint validation..."
+      - cfn-lint Task2/root-stack.yaml Task2/modules/*.yaml
       
-      - echo "Step 2. Packaging templates..."
-      - echo "Using artifact bucket $ARTIFACT_BUCKET"
-      - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket "$ARTIFACT_BUCKET" --output-template-file Task2/packaged-root-stack.yaml
+      - echo "Packaging templates..."
+      - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml
       
-      - echo "Step 3. Running taskcat tests..."
-      - echo "Checking taskcat configuration..."
-      - ls -la Task2/.taskcat.yml
-      - cat Task2/.taskcat.yml
-      
-      - echo "Validating taskcat configuration..."
-      - "cd Task2 && taskcat test list"
-      
-      - echo "Running taskcat with detailed output and no cleanup..."
-      - "cd Task2 && taskcat test run --no-delete --verbose"
-  
-  post_build:
-    commands:
-      - echo "Template validation, testing, and packaging complete"
-      - echo "Checking for TaskCat outputs and logs..."
-      - find Task2 -name "taskcat_outputs" -type d -exec ls -la {} \; 2>/dev/null || echo "No taskcat_outputs found"
-      - find Task2 -name "*.log" -exec echo "=== {} ===" \; -exec cat {} \; 2>/dev/null || echo "No log files found"
+      - echo "Running taskcat test..."
+      - cd Task2 && taskcat test run
 
 artifacts:
   files:
