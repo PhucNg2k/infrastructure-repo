@@ -24,7 +24,7 @@ phases:
       - ls -la Task2/.taskcat.yml
       - cat Task2/.taskcat.yml
       - echo "Running taskcat with verbose output..."
-      - "cd Task2 && taskcat test run -v && cd .."
+      - "cd Task2 && taskcat test -v && cd .."
       - echo "Step 3. Packaging templates..."
       - "aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml"
   
