@@ -14,7 +14,7 @@ phases:
       - cfn-lint --config-file Task2/cfnlintrc.yml Task2/root-stack.yaml Task2/modules/*.yaml
       
       - echo "Packaging templates..."
-      - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket ${ARTIFACT_BUCKET} --output-template-file Task2/packaged-root-stack.yaml
+      - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket "${ARTIFACT_BUCKET}" --output-template-file Task2/packaged-root-stack.yaml
       
       - echo "Running taskcat test..."
       - cd Task2 && taskcat test run
