@@ -60,7 +60,7 @@ Resources:
         PrivilegedMode: false
       Source:
         Type: CODEPIPELINE
-        BuildSpec: buildspec.yml
+        BuildSpec: buildspec.yml  # This is now in the root directory
 
   # Pipeline
   Pipeline:
