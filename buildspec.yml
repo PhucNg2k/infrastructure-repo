@@ -6,7 +6,8 @@ phases:
       - sudo yum update -y
       - sudo yum install -y python3 python3-pip
       - python3 -m pip install --upgrade pip
-      - python3 -m pip install cfn-lint taskcat
+      - python3 -m pip install --user cfn-lint taskcat
+      - export PATH=$PATH:$HOME/.local/bin
   
   pre_build:
     commands:
