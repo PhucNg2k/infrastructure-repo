@@ -41,7 +41,7 @@ phases:
       - "cd Task2 && taskcat test list"
       
       - echo "Running taskcat with detailed output and no cleanup..."
-      - "cd Task2 && taskcat test --no-delete --verbose"
+      - "cd Task2 && taskcat test run --no-delete --verbose"
   
   post_build:
     commands:
