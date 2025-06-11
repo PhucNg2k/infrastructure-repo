@@ -17,11 +17,11 @@ phases:
       - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket "${ARTIFACT_BUCKET}" --output-template-file Task2/packaged-root-stack.yaml
       
       - echo "Running taskcat test..."
-      - cd Task2 && taskcat test run -d -v 
+      - taskcat test run -d -v
 
 artifacts:
   files:
     - Task2/packaged-root-stack.yaml
     - Task2/modules/*
-    - Task2/.taskcat.yml
+    - .taskcat.yml
   base-directory: .
