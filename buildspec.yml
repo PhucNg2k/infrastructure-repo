@@ -17,7 +17,7 @@ phases:
       - aws cloudformation package --template-file Task2/root-stack.yaml --s3-bucket "${ARTIFACT_BUCKET}" --output-template-file Task2/packaged-root-stack.yaml
       
       - echo "Running taskcat test..."
-      - taskcat test run -d -v
+      - taskcat test run -d
 
 artifacts:
   files:
